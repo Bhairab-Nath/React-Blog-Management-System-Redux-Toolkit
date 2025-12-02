@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const From = ({ type, submit }) => {
+const From = ({ type, submit, user }) => {
 
     const [data, setData] = useState({
         username: '',
@@ -40,6 +40,7 @@ const From = ({ type, submit }) => {
                             </div>
 
                             <form onSubmit={handleSubmit}>
+                                {type === 'Login' && user && `Hello, ${user}`}
                                 <div className="divide-y divide-gray-200">
                                     <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                                         {
