@@ -1,15 +1,28 @@
 import React, { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../../components/layout/Layout'
 import { useDispatch, useSelector } from 'react-redux'
-import { readSingleBlog } from '../../../store/blogSlice'
+import { deleteBlog, readSingleBlog } from '../../../store/blogSlice'
+import STATUSES from '../../globals/status/statuses'
 
 const SingleBlog = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const {singleBlog} = useSelector((state)=>state.blog)
-   
+    const { singleBlog, status } = useSelector((state) => state.blog)
+
+    const handleDelete = () => {
+        dispatch(deleteBlog(id))
+
+        if (status === STATUSES.SUCCESS) {
+           return navigate('/')
+        }
+        else{
+           return navigate(`/blog/${id}`)
+        }
+    }
+
     useEffect(() => {
         dispatch(readSingleBlog(id))
     }, [])
@@ -25,13 +38,13 @@ const SingleBlog = () => {
                             </div>
                             <div className="flex -mx-2 mb-4">
                                 <div className="w-1/2 px-2">
-                                    <Link to={`/blog/edit/${singleBlog._id}`}>
+                                    <Link to={`/blog/edit/${singleBlog?._id}`}>
                                         <button className="w-full bg-green-600  text-white py-2 px-4 rounded-full font-bold hover:bg-green-500 ">Edit</button>
                                     </Link>
                                 </div>
 
                                 <div className="w-1/2 px-2">
-                                    <button className="w-full bg-red-600  text-white py-2 px-4 rounded-full font-bold hover:bg-red-500 ">Delete</button>
+                                    <button className="w-full bg-red-600  text-white py-2 px-4 rounded-full font-bold hover:bg-red-500 " onClick={handleDelete}>Delete</button>
                                 </div>
                             </div>
                         </div>

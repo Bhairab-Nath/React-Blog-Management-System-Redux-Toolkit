@@ -17,7 +17,7 @@ const Home = () => {
       <div className='flex flex-wrap justify-center'>
         {blogs?.length > 0 && blogs.map((blog)=>{
           return (
-            <Card blog = {blog}/>
+            <Card key={blog?._id} blog = {blog}/>
           )
 
         })}

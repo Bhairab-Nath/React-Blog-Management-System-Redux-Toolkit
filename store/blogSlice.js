@@ -18,7 +18,7 @@ const blogSlice = createSlice({
         setStatus(state, action) {
             state.status = action.payload
         },
-        setSingleBlog(state, action){
+        setSingleBlog(state, action) {
             state.singleBlog = action.payload
         }
 
@@ -77,13 +77,36 @@ export function readBlog() {
     }
 }
 
-export function readSingleBlog(id){
-    return async function readSingleBlogThunk(dispatch){
+export function readSingleBlog(id) {
+    return async function readSingleBlogThunk(dispatch) {
         dispatch(setStatus(STATUSES.LOADING))
         try {
             const response = await axios.get(`${baseUrl}/api/user/blog/${id}`)
-            if(response.status === 200){
+            if (response.status === 200) {
                 dispatch(setSingleBlog(response?.data?.data))
+                dispatch(setStatus(STATUSES.SUCCESS))
+            }
+            else {
+                dispatch(setStatus(STATUSES.ERROR))
+            }
+
+        } catch (error) {
+            dispatch(setStatus(STATUSES.ERROR))
+        }
+
+    }
+}
+
+export function deleteBlog(id) {
+    return async function deleteBlogThunk(dispatch){
+        try {
+            const response = await axios.delete(`${baseUrl}/api/user/blog/${id}`,{
+                headers: {
+                    "Authorization": localStorage.getItem('token')
+                }
+            })
+            
+            if( response === 200){
                 dispatch(setStatus(STATUSES.SUCCESS))
             }
             else{
@@ -93,8 +116,5 @@ export function readSingleBlog(id){
         } catch (error) {
             dispatch(setStatus(STATUSES.ERROR))
         }
-        
     }
 }
-
-
