@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Card = ({blog}) => {
     return (
         <>
-        <Link to='/blog/id'>
+        <Link to={`/blog/${blog._id}`}>
             <div className="max-w-sm m-4 rounded overflow-hidden shadow-lg">
                 <img className="w-full" src={blog.imageUrl} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">

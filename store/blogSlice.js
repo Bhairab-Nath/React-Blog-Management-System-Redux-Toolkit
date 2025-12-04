@@ -8,6 +8,7 @@ const blogSlice = createSlice({
     name: "blog",
     initialState: {
         blogs: [],
+        singleBlog: null,
         status: null
     },
     reducers: {
@@ -16,13 +17,16 @@ const blogSlice = createSlice({
         },
         setStatus(state, action) {
             state.status = action.payload
+        },
+        setSingleBlog(state, action){
+            state.singleBlog = action.payload
         }
 
     }
 
 })
 
-export const { setBlogs, setStatus } = blogSlice.actions
+export const { setBlogs, setStatus, setSingleBlog } = blogSlice.actions
 export default blogSlice.reducer
 
 
@@ -72,3 +76,25 @@ export function readBlog() {
         }
     }
 }
+
+export function readSingleBlog(id){
+    return async function readSingleBlogThunk(dispatch){
+        dispatch(setStatus(STATUSES.LOADING))
+        try {
+            const response = await axios.get(`${baseUrl}/api/user/blog/${id}`)
+            if(response.status === 200){
+                dispatch(setSingleBlog(response?.data?.data))
+                dispatch(setStatus(STATUSES.SUCCESS))
+            }
+            else{
+                dispatch(setStatus(STATUSES.ERROR))
+            }
+
+        } catch (error) {
+            dispatch(setStatus(STATUSES.ERROR))
+        }
+        
+    }
+}
+
+
