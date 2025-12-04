@@ -99,6 +99,7 @@ export function readSingleBlog(id) {
 
 export function deleteBlog(id) {
     return async function deleteBlogThunk(dispatch){
+        dispatch(setStatus(STATUSES.LOADING))
         try {
             const response = await axios.delete(`${baseUrl}/api/user/blog/${id}`,{
                 headers: {
