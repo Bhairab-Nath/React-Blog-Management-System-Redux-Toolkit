@@ -44,7 +44,7 @@ const EditBlog = () => {
 
   useEffect(()=>{
       setBlog(singleBlog)
-  }, [])
+  }, [singleBlog])
 
   return (
     <Layout>
