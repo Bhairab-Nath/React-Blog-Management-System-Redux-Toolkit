@@ -12,7 +12,7 @@ const EditBlog = () => {
   const navigate = useNavigate()
   const { id } = useParams()
   const dispatch = useDispatch()
-  const {status,singleBlog} = useSelector((state)=>state.blog)
+  const { status, singleBlog } = useSelector((state) => state.blog)
 
   const [blog, setBlog] = useState({
     title: '',
@@ -23,27 +23,27 @@ const EditBlog = () => {
   })
 
   const handleOnChange = (e) => {
-    const {name, value} = e.target
+    const { name, value } = e.target
     setBlog({
       ...blog,
-      [name]: name === 'image'? e.target.files[0] : value
+      [name]: name === 'image' ? e.target.files[0] : value
     })
   }
 
 
   const handleEdit = (e) => {
     e.preventDefault()
-    dispatch(editBlog(id,blog))
-    if(status === STATUSES.SUCCESS){
+    dispatch(editBlog(id, blog))
+    if (status === STATUSES.SUCCESS) {
       navigate('/')
     }
-    else{
+    else {
       navigate(`/blog/edit/${id}`)
-    }   
+    }
   }
 
-  useEffect(()=>{
-      setBlog(singleBlog)
+  useEffect(() => {
+    setBlog(singleBlog)
   }, [singleBlog])
 
   return (
