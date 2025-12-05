@@ -123,6 +123,7 @@ export function deleteBlog(id) {
 
 export function editBlog(id, data) {
     return async function editBlogThunk(dispatch){
+        dispatch(setStatus(STATUSES.LOADING))
         try {
             const response = await axios.patch(`${baseUrl}/api/user/blog/${id}`,data,{
                 headers:{
