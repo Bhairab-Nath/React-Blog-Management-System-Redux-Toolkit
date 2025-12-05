@@ -119,3 +119,27 @@ export function deleteBlog(id) {
         }
     }
 }
+
+
+export function editBlog(id, data) {
+    return async function editBlogThunk(dispatch){
+        try {
+            const response = await axios.patch(`${baseUrl}/api/user/blog/${id}`,data,{
+                headers:{
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": localStorage.getItem('token')
+                }
+            })
+
+            if(response.status === 200){
+                dispatch(setStatus(STATUSES.SUCCESS))
+            }
+            else{
+                dispatch(setStatus(STATUSES.ERROR))
+            }
+
+        } catch (error) {
+            dispatch(setStatus(STATUSES.ERROR))
+        }
+    }
+}
