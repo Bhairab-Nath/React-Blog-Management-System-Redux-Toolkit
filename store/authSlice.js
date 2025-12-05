@@ -59,6 +59,7 @@ export function login(data) {
             const response = await axios.post(`${baseUrl}/api/user/login`, data)
 
             if (response.status === 200) {
+                localStorage.setItem("token" ,response?.data?.token)
                 dispatch(setToken(response?.data?.token))
                 dispatch(setStatus(STATUSES.SUCCESS))
             }
