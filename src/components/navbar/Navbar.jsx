@@ -1,6 +1,25 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { setToken } from '../../../store/authSlice'
 const Navbar = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { token } = useSelector((state) => state.auth)
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+    useEffect(() => {
+        const jwt = localStorage.getItem('token')
+        setIsLoggedIn(!!jwt || !!token)
+    }, [token])
+
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        dispatch(setToken(null))
+        navigate('/login')
+    }
+
+
     return (
         <>
             <nav className="bg-white shadow-md py-4 px-8">
@@ -24,30 +43,46 @@ const Navbar = () => {
                     </div>
 
 
+
                     <ul className="flex items-center gap-6 ml-auto">
-                        <li>
-                            <Link to='/blog/add'
-                                className="text-blue-600 font-semibold hover:text-blue-700 transition"
-                            >
-                                Create
-                            </Link>
-                        </li>
+                        {isLoggedIn ? <>
+                    
+                            <li>
+                                <Link to='/blog/add'
+                                    className="text-blue-600 font-semibold hover:text-blue-700 transition"
+                                >
+                                    Create
+                                </Link>
+                            </li>
+                            <li>
+                                <button onClick={handleLogout}
+                                    className="text-blue-600 font-semibold hover:text-blue-700 transition" >
+                                    Logout
 
-                        <li>
-                            <Link to='/login'
-                                className="text-blue-600 font-semibold hover:text-blue-700 transition"
-                            >
-                                Login
-                            </Link>
-                        </li>
+                                </button>
+                            </li>
 
-                        <li>
-                            <Link to="/register"
-                                className="text-white font-semibold bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                            >
-                                Register
-                            </Link>
-                        </li>
+                        </> :
+                            <>
+
+                                <li>
+                                    <Link to='/login'
+                                        className="text-blue-600 font-semibold hover:text-blue-700 transition"
+                                    >
+                                        Login
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link to="/register"
+                                        className="text-white font-semibold bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                                    >
+                                        Register
+                                    </Link>
+                                </li>
+                            </>
+                        }
+
                     </ul>
 
                 </div>

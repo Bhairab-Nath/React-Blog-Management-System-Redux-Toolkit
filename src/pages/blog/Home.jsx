@@ -7,7 +7,6 @@ import { readBlog } from '../../../store/blogSlice'
 const Home = () => {
   const dispatch = useDispatch()
   const {blogs} = useSelector((state)=> state.blog)
-
   useEffect(()=>{
     dispatch(readBlog())
   },[])
